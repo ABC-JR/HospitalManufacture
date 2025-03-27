@@ -26,8 +26,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import coil3.compose.AsyncImage
+import coil.compose.AsyncImage
 import com.example.hospitalinfrastructuremanagement.screens.mainpage.MainScreen
+import com.example.hospitalinfrastructuremanagement.screens.profilepage.ProfileScreen
+import com.example.hospitalinfrastructuremanagement.screens.signinpage.Signscreen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -56,28 +58,22 @@ fun MainApp() {
     {
         padding->
 
-        var isUserLoggedIn = false
+        val isUserLoggedIn = false
 
-        val destination =
-            if(isUserLoggedIn){
-                "signin"
-                isUserLoggedIn = true
-            }
-        else{
-            "mainpage"
-        }
+        val destination = if (isUserLoggedIn) "mainpage" else "signin"
+
         NavHost(navconroller , startDestination = destination) {
             composable("signin") {
-
+                Signscreen(navconroller )
             }
             composable("mainpage") {
                 MainScreen(padding ,  navconroller)
             }
             composable("tasks") {
-
+                Text(text = "tasks")
             }
             composable("profile") {
-
+                ProfileScreen(padding , navconroller)
             }
         }
 
