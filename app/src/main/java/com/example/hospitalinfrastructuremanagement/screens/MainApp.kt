@@ -125,7 +125,7 @@ fun BottomBar(navconroller : NavController){
                 selected = selectedid ==index ,
                 onClick = {
                     selectedid = index
-                    navconroller.navigate(item)
+                    navconroller.navigate(item.route)
                 } ,
                 icon = {
                     Icon(item.id , "")
