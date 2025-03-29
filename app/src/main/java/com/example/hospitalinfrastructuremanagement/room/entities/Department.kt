@@ -2,9 +2,21 @@ package com.example.hospitalinfrastructuremanagement.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(
+    tableName = "Department",
+    foreignKeys = [
+        ForeignKey(
+            entity = DepartmentChief::class,
+            parentColumns = arrayOf("ID"),
+            childColumns = arrayOf("Department_chief_ID"),
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Department(
     @PrimaryKey
     @ColumnInfo(name = "Department_ID") val departmentID: Int,

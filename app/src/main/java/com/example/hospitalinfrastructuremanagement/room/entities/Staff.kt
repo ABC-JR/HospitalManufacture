@@ -5,12 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "Patient"
+    tableName = "Staff"
 )
-data class Patient(
+data class Staff(
     @PrimaryKey
     @ColumnInfo(name = "ID") val ID: Int,
-    @ColumnInfo(name = "Age") val age: Byte,
-    @ColumnInfo(name = "First_name") val firstName: String,
-    @ColumnInfo(name = "Last_name") val lastName: String
+    @ColumnInfo(name = "Hiring_date") val hiringDate: String
 )
