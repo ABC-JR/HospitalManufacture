@@ -21,14 +21,29 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HospitalDao {
 
+    @Query("SELECT * FROM staff WHERE ID LIKE :ID LIMIT 1")
+    fun getStaffByID(ID: Int): Flow<Staff>
+
+    @Query("SELECT * FROM staff")
+    fun getStaff(): Flow<List<Staff>>
+
     @Query("SELECT * FROM nurse WHERE ID LIKE :ID LIMIT 1")
-    fun getNurse(ID: Int): Flow<Nurse>
+    fun getNurseByID(ID: Int): Flow<Nurse>
+
+    @Query("SELECT * FROM nurse")
+    fun getNurses(): Flow<List<Nurse>>
 
     @Query("SELECT * FROM doctor WHERE ID LIKE :ID LIMIT 1")
-    fun getDoctor(ID: Int): Flow<Doctor>
+    fun getDoctorByID(ID: Int): Flow<Doctor>
+
+    @Query("SELECT * FROM doctor")
+    fun getDoctors(): Flow<List<Doctor>>
 
     @Query("SELECT * FROM department_chief WHERE ID LIKE :ID LIMIT 1")
-    fun getDepartmentChief(ID: Int): Flow<DepartmentChief>
+    fun getDepartmentChiefByID(ID: Int): Flow<DepartmentChief>
+
+    @Query("SELECT * FROM department_chief")
+    fun getDepartmentChiefs(): Flow<List<DepartmentChief>>
 
     @Query("SELECT * FROM nurse WHERE salary > :salary")
     fun getNursesWithSalaryMoreThan(salary: Double): Flow<List<Nurse>>
@@ -70,13 +85,22 @@ interface HospitalDao {
     // Patient
 
     @Query("SELECT * FROM room WHERE room_number LIKE :roomNumber LIMIT 1")
-    fun getRoom(roomNumber: Int): Flow<Room>
+    fun getRoomByNumber(roomNumber: Int): Flow<Room>
+
+    @Query("SELECT * FROM room")
+    fun getRooms(): Flow<List<Room>>
 
     @Query("SELECT * FROM ward WHERE room_number LIKE :roomNumber LIMIT 1")
-    fun getWard(roomNumber: Int): Flow<Ward>
+    fun getWardByNumber(roomNumber: Int): Flow<Ward>
+
+    @Query("SELECT * FROM ward")
+    fun getWards(): Flow<List<Ward>>
 
     @Query("SELECT * FROM cabinet WHERE room_number LIKE :roomNumber LIMIT 1")
-    fun getCabinet(roomNumber: Int): Flow<Cabinet>
+    fun getCabinetByNumber(roomNumber: Int): Flow<Cabinet>
+
+    @Query("SELECT * FROM cabinet")
+    fun getCabinets(): Flow<List<Cabinet>>
 
     @Upsert
     suspend fun upsertRoom(room: Room)
