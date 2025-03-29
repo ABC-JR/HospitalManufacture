@@ -1,0 +1,119 @@
+package com.example.hospitalinfrastructuremanagement.room
+
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
+import com.example.hospitalinfrastructuremanagement.room.entities.AccidentEmergency
+import com.example.hospitalinfrastructuremanagement.room.entities.Appointment
+import com.example.hospitalinfrastructuremanagement.room.entities.Cabinet
+import com.example.hospitalinfrastructuremanagement.room.entities.Department
+import com.example.hospitalinfrastructuremanagement.room.entities.DepartmentChief
+import com.example.hospitalinfrastructuremanagement.room.entities.Doctor
+import com.example.hospitalinfrastructuremanagement.room.entities.Nurse
+import com.example.hospitalinfrastructuremanagement.room.entities.Paediatrics
+import com.example.hospitalinfrastructuremanagement.room.entities.Patient
+import com.example.hospitalinfrastructuremanagement.room.entities.Room
+import com.example.hospitalinfrastructuremanagement.room.entities.Staff
+import com.example.hospitalinfrastructuremanagement.room.entities.Surgery
+import com.example.hospitalinfrastructuremanagement.room.entities.Ward
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface HospitalDao {
+
+    @Query("SELECT * FROM nurse WHERE ID LIKE :ID LIMIT 1")
+    fun getNurse(ID: Int): Flow<Nurse>
+
+    @Query("SELECT * FROM doctor WHERE ID LIKE :ID LIMIT 1")
+    fun getDoctor(ID: Int): Flow<Doctor>
+
+    @Query("SELECT * FROM department_chief WHERE ID LIKE :ID LIMIT 1")
+    fun getDepartmentChief(ID: Int): Flow<DepartmentChief>
+
+    @Query("SELECT * FROM nurse WHERE salary > :salary")
+    fun getNursesWithSalaryMoreThan(salary: Double): Flow<List<Nurse>>
+
+    @Query("SELECT * FROM doctor WHERE salary > :salary")
+    fun getDoctorsWithSalaryMoreThan(salary: Double): Flow<List<Doctor>>
+
+    @Query("SELECT * FROM department_chief WHERE salary > :salary")
+    fun getDepartmentChiefsWithSalaryMoreThan(salary: Double): Flow<List<DepartmentChief>>
+
+    @Upsert
+    suspend fun upsertStaff(staff: Staff)
+
+    @Upsert
+    suspend fun upsertNurse(nurse: Nurse)
+
+    @Upsert
+    suspend fun upsertDoctor(doctor: Doctor)
+
+    @Upsert
+    suspend fun upsertDepartmentChief(departmentChief: DepartmentChief)
+
+    // Staff, Nurse, Doctor, Department chief
+
+    @Query("SELECT * FROM department WHERE department_id LIKE :departmentID LIMIT 1")
+    fun getDepartment(departmentID: Int) : Flow<Department>
+
+    @Upsert
+    suspend fun upsertDepartment(department: Department)
+
+    // Department
+
+    @Query("SELECT * FROM patient WHERE ID LIKE :ID LIMIT 1")
+    fun getPatient(ID: Int): Flow<Patient>
+
+    @Upsert
+    suspend fun upsertPatient(patient: Patient)
+
+    // Patient
+
+    @Query("SELECT * FROM room WHERE room_number LIKE :roomNumber LIMIT 1")
+    fun getRoom(roomNumber: Int): Flow<Room>
+
+    @Query("SELECT * FROM ward WHERE room_number LIKE :roomNumber LIMIT 1")
+    fun getWard(roomNumber: Int): Flow<Ward>
+
+    @Query("SELECT * FROM cabinet WHERE room_number LIKE :roomNumber LIMIT 1")
+    fun getCabinet(roomNumber: Int): Flow<Cabinet>
+
+    @Upsert
+    suspend fun upsertRoom(room: Room)
+
+    @Upsert
+    suspend fun upsertWard(ward: Ward)
+
+    @Upsert
+    suspend fun upsertCabinet(cabinet: Cabinet)
+
+    // Room, Ward, Cabinet
+
+    @Query("SELECT * FROM appointment WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND cabinet_number LIKE :cabinetNumber LIMIT 1")
+    fun getAppointment(staffID: Int, patientID: Int, cabinetNumber: Int): Flow<Appointment>
+
+    @Upsert
+    suspend fun upsertAppointment(appointment: Appointment)
+
+    // Appointment
+
+    @Query("SELECT * FROM `accident&emergency` WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
+    fun getAccidentEmergency(patientID: Int, staffID: Int, wardNumber: Int) : Flow<AccidentEmergency>
+
+    @Query("SELECT * FROM surgery WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
+    fun getSurgery(patientID: Int, staffID: Int, wardNumber: Int) : Flow<Surgery>
+
+    @Query("SELECT * FROM paediatrics WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
+    fun getPaediatrics(patientID: Int, staffID: Int, wardNumber: Int) : Flow<Paediatrics>
+
+    @Upsert
+    suspend fun upsertAccidentEmergency(accidentEmergency: AccidentEmergency)
+
+    @Upsert
+    suspend fun upsertSurgery(surgery: Surgery)
+
+    @Upsert
+    suspend fun upsertPaediatrics(paediatrics: Paediatrics)
+
+    // Accident&Emergency, Surgery, Paediatrics
+}

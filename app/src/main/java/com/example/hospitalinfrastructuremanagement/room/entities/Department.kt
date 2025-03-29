@@ -7,19 +7,9 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "Department",
-    foreignKeys = [
-        ForeignKey(
-            entity = DepartmentChief::class,
-            parentColumns = arrayOf("ID"),
-            childColumns = arrayOf("Department_chief_ID"),
-            onUpdate = ForeignKey.CASCADE,
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
 )
 data class Department(
     @PrimaryKey
     @ColumnInfo(name = "Department_ID") val departmentID: Int,
-    @ColumnInfo(name = "Department_name") val departmentName: String,
-    @ColumnInfo(name = "Department_chief_ID") val departmentChiefID: Int //TODO: Foreign
+    @ColumnInfo(name = "Department_name") val departmentName: String
 )

@@ -38,5 +38,5 @@ data class DepartmentChief(
     @ColumnInfo(name = "First_name") val firstName: String,
     @ColumnInfo(name = "Last_name") val lastName: String,
     @ColumnInfo(name = "Salary") val salary: Double,
-    @ColumnInfo(name = "Department_ID") val departmentID: Int, // TODO: Foreign
+    @ColumnInfo(name = "Department_ID") val departmentID: Int, //
 )
