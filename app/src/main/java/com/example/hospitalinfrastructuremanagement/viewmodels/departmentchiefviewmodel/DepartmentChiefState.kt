@@ -7,7 +7,6 @@ import com.example.hospitalinfrastructuremanagement.room.entities.Nurse
 import com.example.hospitalinfrastructuremanagement.room.entities.Room
 import com.example.hospitalinfrastructuremanagement.room.entities.Staff
 import com.example.hospitalinfrastructuremanagement.room.entities.Ward
-import com.example.hospitalinfrastructuremanagement.viewmodels.StaffCategory
 import com.example.hospitalinfrastructuremanagement.viewmodels.WardType_
 
 data class DepartmentChiefState(
@@ -41,7 +40,6 @@ data class DepartmentChiefState(
     var addingStaffID: Int = 0,
     var staff: List<Staff> = emptyList(),
 
-    var addingStaffCategory: StaffCategory = StaffCategory.NURSE,
     var addingNurseManagerDoctorID: Int = 0,
     var addingNurseWardNumber: Int = 0,
     var addingDoctorExperience: Double = 0.0,

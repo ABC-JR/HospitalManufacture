@@ -1,5 +1,6 @@
 package com.example.hospitalinfrastructuremanagement.viewmodels.departmentchiefviewmodel
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hospitalinfrastructuremanagement.room.HospitalDao
@@ -10,6 +11,7 @@ import com.example.hospitalinfrastructuremanagement.room.entities.Nurse
 import com.example.hospitalinfrastructuremanagement.room.entities.Room
 import com.example.hospitalinfrastructuremanagement.room.entities.Staff
 import com.example.hospitalinfrastructuremanagement.room.entities.Ward
+import com.example.hospitalinfrastructuremanagement.viewmodels.WardType_
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.WhileSubscribed
@@ -55,37 +57,354 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
     fun onEvent(event: DepartmentChiefEvent) {
         when(event) {
             is DepartmentChiefEvent.SetStaffSalary -> {
-                _state.value.staffSalary = event.salary
+                _state.update {
+                    it.copy(
+                        staffSalary = event.salary
+                    )
+                }
             }
             is DepartmentChiefEvent.SetStaffHiringDate -> {
-                _state.value.staffHiringDate = event.hiringDate
+                _state.update {
+                    it.copy(
+                        staffHiringDate = event.hiringDate
+                    )
+                }
             }
             is DepartmentChiefEvent.SetStaffDepartmentID -> {
-                _state.value.staffDepartmentID = event.departmentID
+                _state.update {
+                    it.copy(
+                        staffDepartmentID = event.departmentID
+                    )
+                }
             }
             is DepartmentChiefEvent.SetStaffFirstName -> {
-                _state.value.staffFirstName = event.firstName
+                _state.update {
+                    it.copy(
+                        staffFirstName = event.firstName
+                    )
+                }
             }
             is DepartmentChiefEvent.SetStaffLastName -> {
-                _state.value.staffLastName = event.lastName
+                _state.update {
+                    it.copy(
+                        staffLastName = event.lastName
+                    )
+                }
             }
             is DepartmentChiefEvent.SetStaffID -> {
-                _state.value.staffID = event.staffID
+                _state.update {
+                    it.copy(
+                        staffID = event.staffID
+                    )
+                }
             }
 
             // Reusable
 
             DepartmentChiefEvent.IsAddingCabinet -> {
-                _state.value.isAddingCabinet = true
+                _state.update {
+                    it.copy(
+                        isAddingCabinet = true
+                    )
+                }
             }
             is DepartmentChiefEvent.SetCabinetNumber -> {
-                _state.value.cabinetNumber = event.roomNumber
+                _state.update {
+                    it.copy(
+                        cabinetNumber = event.roomNumber
+                    )
+                }
             }
             is DepartmentChiefEvent.SetCabinetStaffID -> {
-                _state.value.cabinetStaffID = event.staffID
+                _state.update {
+                    it.copy(
+                        cabinetStaffID = event.staffID
+                    )
+                }
             }
             DepartmentChiefEvent.SaveCabinet -> {
+                if(_state.value.cabinetNumber <= 0) {
+                    return;
+                }
+                try {
+                    viewModelScope.launch {
+                        dao.upsertRoom(Room(roomNumber = _state.value.cabinetNumber))
+                        dao.upsertCabinet(Cabinet(roomNumber = _state.value.cabinetNumber, staffID = _state.value.cabinetStaffID))
+                    }
+                } catch (e: SQLiteConstraintException) {
+                    return;
+                }
+                _state.update {
+                    it.copy(
+                        isAddingCabinet = false
+                    )
+                }
+            }
+            DepartmentChiefEvent.IsAddingWard -> {
+                _state.update {
+                    it.copy(
+                        isAddingWard = true,
+                        cabinetNumber = 0,
+                        cabinetStaffID = 0
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetWardNumber -> {
+                _state.update {
+                    it.copy(
+                        wardNumber = event.roomNumber
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetWardDoctorID -> {
+                _state.update {
+                    it.copy(
+                        wardDoctorID = event.staffID
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetWardType -> {
+                _state.update {
+                    it.copy(
+                        wardType = event.wardType
+                    )
+                }
+            }
+            DepartmentChiefEvent.SaveWard -> {
+                if(_state.value.wardNumber <= 0) {
+                    return
+                }
+                val wardType: String = when(_state.value.wardType) {
+                    WardType_.ACCIDENT_EMERGENCY -> { "Accident&Emergency" }
+                    WardType_.SURGERY -> { "Surgery" }
+                    WardType_.PAEDIATRICS -> { "Paediatrics" }
+                }
+                try {
+                    viewModelScope.launch {
+                        dao.upsertRoom(Room(roomNumber = _state.value.wardNumber))
+                        dao.upsertWard(Ward(
+                            roomNumber = _state.value.wardNumber,
+                            doctorID = _state.value.wardDoctorID,
+                            type = wardType)
+                        )
+                    }
+                } catch (e: SQLiteConstraintException) {
+                    return;
+                }
 
+                _state.update {
+                    it.copy(
+                        isAddingWard = false,
+                        wardNumber = 0,
+                        wardDoctorID = 0,
+                        wardType = WardType_.ACCIDENT_EMERGENCY
+                    )
+                }
+            }
+            DepartmentChiefEvent.IsAddingStaff -> {
+                _state.update {
+                    it.copy(
+                        isAddingStaff = true
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffSalary -> {
+                _state.update {
+                    it.copy(
+                        addingStaffSalary = event.salary
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffHiringDate -> {
+                _state.update {
+                    it.copy(
+                        addingStaffHiringDate = event.hiringDate
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffDepartmentID -> {
+                _state.update {
+                    it.copy(
+                        addingStaffDepartmentID = event.departmentID
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffFirstName -> {
+                _state.update {
+                    it.copy(
+                        addingStaffFirstName = event.firstName
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffLastName -> {
+                _state.update {
+                    it.copy(
+                        addingStaffLastName = event.lastName
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingStaffID -> {
+                _state.update {
+                    it.copy(
+                        addingStaffID = event.staffID
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingNurseManagerDoctorID -> {
+                _state.update {
+                    it.copy(
+                        addingNurseManagerDoctorID = event.managerDoctorID
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingNurseWardNumber -> {
+                _state.update {
+                    it.copy(
+                        addingNurseWardNumber = event.wardNumber
+                    )
+                }
+            }
+            DepartmentChiefEvent.SaveNurse -> {
+                if(_state.value.run {
+                    addingStaffSalary <= 0 || addingStaffHiringDate.isBlank() || addingStaffFirstName.isBlank() ||
+                    addingStaffLastName.isBlank() || addingStaffID <= 0
+                    }) {
+                    return;
+                }
+
+                try {
+                    viewModelScope.launch {
+                        dao.upsertStaff(
+                            Staff(
+                                ID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate
+                            )
+                        )
+                        dao.upsertNurse(
+                            Nurse(
+                                staffID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                firstName = _state.value.addingStaffFirstName,
+                                lastName = _state.value.addingStaffLastName,
+                                salary = _state.value.addingStaffSalary,
+                                departmentID = _state.value.addingStaffDepartmentID,
+                                managerDoctorID = _state.value.addingNurseManagerDoctorID,
+                                wardNumber = _state.value.addingNurseWardNumber
+                            )
+                        )
+                    }
+                } catch (e: SQLiteConstraintException) {
+                    return;
+                }
+
+                _state.update {
+                    it.copy(
+                        isAddingStaff = false,
+                        addingStaffSalary = 0.0,
+                        addingStaffHiringDate = "",
+                        addingStaffDepartmentID = 0,
+                        addingStaffFirstName = "",
+                        addingStaffLastName = "",
+                        addingStaffID = 0,
+                        addingNurseManagerDoctorID = 0,
+                        addingNurseWardNumber = 0
+                    )
+                }
+            }
+            is DepartmentChiefEvent.SetAddingDoctorExperience -> {
+                _state.update {
+                    it.copy (
+                        addingDoctorExperience = event.doctorExperience
+                    )
+                }
+            }
+            DepartmentChiefEvent.SaveDoctor -> {
+                if(_state.value.run {
+                        addingStaffSalary <= 0 || addingStaffHiringDate.isBlank() || addingStaffFirstName.isBlank() ||
+                                addingStaffLastName.isBlank() || addingStaffID <= 0 || addingDoctorExperience < 0
+                    }) {
+                    return;
+                }
+
+                try {
+                    viewModelScope.launch {
+                        dao.upsertStaff(
+                            Staff(
+                                ID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate
+                            )
+                        )
+                        dao.upsertDoctor(
+                            Doctor(
+                                staffID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                firstName = _state.value.addingStaffFirstName,
+                                lastName = _state.value.addingStaffLastName,
+                                salary = _state.value.addingStaffSalary,
+                                departmentID = _state.value.addingStaffDepartmentID,
+                                doctorExperience = _state.value.addingDoctorExperience
+                            )
+                        )
+                    }
+                } catch (e: SQLiteConstraintException) {
+                    return;
+                }
+
+                _state.update {
+                    it.copy(
+                        isAddingStaff = false,
+                        addingStaffSalary = 0.0,
+                        addingStaffHiringDate = "",
+                        addingStaffDepartmentID = 0,
+                        addingStaffFirstName = "",
+                        addingStaffLastName = "",
+                        addingStaffID = 0,
+                        addingDoctorExperience = 0.0
+                    )
+                }
+            }
+            DepartmentChiefEvent.SaveDepartmentChief -> {
+                if(_state.value.run {
+                        addingStaffSalary <= 0 || addingStaffHiringDate.isBlank() || addingStaffFirstName.isBlank() ||
+                                addingStaffLastName.isBlank() || addingStaffID <= 0
+                    }) {
+                    return;
+                }
+
+                try {
+                    viewModelScope.launch {
+                        dao.upsertStaff(
+                            Staff(
+                                ID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate
+                            )
+                        )
+                        dao.upsertDepartmentChief(
+                            DepartmentChief(
+                                staffID = _state.value.addingStaffID,
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                firstName = _state.value.addingStaffFirstName,
+                                lastName = _state.value.addingStaffLastName,
+                                salary = _state.value.addingStaffSalary,
+                                departmentID = _state.value.addingStaffDepartmentID
+                            )
+                        )
+                    }
+                } catch (e: SQLiteConstraintException) {
+                    return;
+                }
+
+                _state.update {
+                    it.copy(
+                        isAddingStaff = false,
+                        addingStaffSalary = 0.0,
+                        addingStaffHiringDate = "",
+                        addingStaffDepartmentID = 0,
+                        addingStaffFirstName = "",
+                        addingStaffLastName = "",
+                        addingStaffID = 0
+                    )
+                }
             }
         }
     }

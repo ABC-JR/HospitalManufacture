@@ -1,6 +1,5 @@
 package com.example.hospitalinfrastructuremanagement.viewmodels.departmentchiefviewmodel
 
-import com.example.hospitalinfrastructuremanagement.viewmodels.StaffCategory
 import com.example.hospitalinfrastructuremanagement.viewmodels.WardType_
 
 interface DepartmentChiefEvent {
@@ -17,8 +16,8 @@ interface DepartmentChiefEvent {
     object SaveCabinet: DepartmentChiefEvent
     object IsAddingWard: DepartmentChiefEvent
     data class SetWardNumber(val roomNumber: Int): DepartmentChiefEvent
-    data class WardDoctorID(val staffID: Int): DepartmentChiefEvent
-    data class WardType(val wardType: WardType_): DepartmentChiefEvent
+    data class SetWardDoctorID(val staffID: Int): DepartmentChiefEvent
+    data class SetWardType(val wardType: WardType_): DepartmentChiefEvent
     object SaveWard: DepartmentChiefEvent
 
     object IsAddingStaff: DepartmentChiefEvent
@@ -28,8 +27,10 @@ interface DepartmentChiefEvent {
     data class SetAddingStaffFirstName(val firstName: String): DepartmentChiefEvent
     data class SetAddingStaffLastName(val lastName: String): DepartmentChiefEvent
     data class SetAddingStaffID(val staffID: Int): DepartmentChiefEvent
-    data class SetAddingStaffCategory(val staffCategory: StaffCategory): DepartmentChiefEvent
     data class SetAddingNurseManagerDoctorID(val managerDoctorID: Int): DepartmentChiefEvent
     data class SetAddingNurseWardNumber(val wardNumber: Int): DepartmentChiefEvent
+    object SaveNurse: DepartmentChiefEvent
     data class SetAddingDoctorExperience(val doctorExperience: Double): DepartmentChiefEvent
+    object SaveDoctor: DepartmentChiefEvent
+    object SaveDepartmentChief: DepartmentChiefEvent
 }
