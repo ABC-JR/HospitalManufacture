@@ -20,7 +20,9 @@ interface DepartmentChiefEvent {
     data class SetWardType(val wardType: WardType_): DepartmentChiefEvent
     object SaveWard: DepartmentChiefEvent
 
-    object IsAddingStaff: DepartmentChiefEvent
+    object IsAddingNurse: DepartmentChiefEvent
+    object IsAddingDoctor: DepartmentChiefEvent
+    object IsAddingDepartmentChief: DepartmentChiefEvent
     data class SetAddingStaffSalary(val salary: Double): DepartmentChiefEvent
     data class SetAddingStaffHiringDate(val hiringDate: String): DepartmentChiefEvent
     data class SetAddingStaffDepartmentID(val departmentID: Int): DepartmentChiefEvent

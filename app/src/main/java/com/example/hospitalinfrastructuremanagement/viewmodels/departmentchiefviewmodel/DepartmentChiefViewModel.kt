@@ -131,13 +131,16 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                         dao.upsertRoom(Room(roomNumber = _state.value.cabinetNumber))
                         dao.upsertCabinet(Cabinet(roomNumber = _state.value.cabinetNumber, staffID = _state.value.cabinetStaffID))
                     }
-                } catch (e: SQLiteConstraintException) {
-                    return;
-                }
-                _state.update {
-                    it.copy(
-                        isAddingCabinet = false
-                    )
+                } catch (_: SQLiteConstraintException) {
+
+                } finally {
+                    _state.update {
+                        it.copy(
+                            isAddingCabinet = false,
+                            cabinetNumber = 0,
+                            cabinetStaffID = 0
+                        )
+                    }
                 }
             }
             DepartmentChiefEvent.IsAddingWard -> {
@@ -188,23 +191,37 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                             type = wardType)
                         )
                     }
-                } catch (e: SQLiteConstraintException) {
-                    return;
-                }
+                } catch (_: SQLiteConstraintException) {
 
+                } finally {
+                    _state.update {
+                        it.copy(
+                            isAddingWard = false,
+                            wardNumber = 0,
+                            wardDoctorID = 0,
+                            wardType = WardType_.ACCIDENT_EMERGENCY
+                        )
+                    }
+                }
+            }
+            DepartmentChiefEvent.IsAddingNurse -> {
                 _state.update {
                     it.copy(
-                        isAddingWard = false,
-                        wardNumber = 0,
-                        wardDoctorID = 0,
-                        wardType = WardType_.ACCIDENT_EMERGENCY
+                        isAddingNurse = true
                     )
                 }
             }
-            DepartmentChiefEvent.IsAddingStaff -> {
+            DepartmentChiefEvent.IsAddingDoctor -> {
                 _state.update {
                     it.copy(
-                        isAddingStaff = true
+                        isAddingDoctor = true
+                    )
+                }
+            }
+            DepartmentChiefEvent.IsAddingDepartmentChief -> {
+                _state.update {
+                    it.copy(
+                        isAddingDepartmentChief = true
                     )
                 }
             }
@@ -293,22 +310,22 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                             )
                         )
                     }
-                } catch (e: SQLiteConstraintException) {
-                    return;
-                }
+                } catch (_: SQLiteConstraintException) {
 
-                _state.update {
-                    it.copy(
-                        isAddingStaff = false,
-                        addingStaffSalary = 0.0,
-                        addingStaffHiringDate = "",
-                        addingStaffDepartmentID = 0,
-                        addingStaffFirstName = "",
-                        addingStaffLastName = "",
-                        addingStaffID = 0,
-                        addingNurseManagerDoctorID = 0,
-                        addingNurseWardNumber = 0
-                    )
+                } finally {
+                    _state.update {
+                        it.copy(
+                            isAddingNurse = false,
+                            addingStaffSalary = 0.0,
+                            addingStaffHiringDate = "",
+                            addingStaffDepartmentID = 0,
+                            addingStaffFirstName = "",
+                            addingStaffLastName = "",
+                            addingStaffID = 0,
+                            addingNurseManagerDoctorID = 0,
+                            addingNurseWardNumber = 0
+                        )
+                    }
                 }
             }
             is DepartmentChiefEvent.SetAddingDoctorExperience -> {
@@ -346,21 +363,21 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                             )
                         )
                     }
-                } catch (e: SQLiteConstraintException) {
-                    return;
-                }
+                } catch (_: SQLiteConstraintException) {
 
-                _state.update {
-                    it.copy(
-                        isAddingStaff = false,
-                        addingStaffSalary = 0.0,
-                        addingStaffHiringDate = "",
-                        addingStaffDepartmentID = 0,
-                        addingStaffFirstName = "",
-                        addingStaffLastName = "",
-                        addingStaffID = 0,
-                        addingDoctorExperience = 0.0
-                    )
+                } finally {
+                    _state.update {
+                        it.copy(
+                            isAddingDoctor = false,
+                            addingStaffSalary = 0.0,
+                            addingStaffHiringDate = "",
+                            addingStaffDepartmentID = 0,
+                            addingStaffFirstName = "",
+                            addingStaffLastName = "",
+                            addingStaffID = 0,
+                            addingDoctorExperience = 0.0
+                        )
+                    }
                 }
             }
             DepartmentChiefEvent.SaveDepartmentChief -> {
@@ -390,20 +407,20 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                             )
                         )
                     }
-                } catch (e: SQLiteConstraintException) {
-                    return;
-                }
+                } catch (_: SQLiteConstraintException) {
 
-                _state.update {
-                    it.copy(
-                        isAddingStaff = false,
-                        addingStaffSalary = 0.0,
-                        addingStaffHiringDate = "",
-                        addingStaffDepartmentID = 0,
-                        addingStaffFirstName = "",
-                        addingStaffLastName = "",
-                        addingStaffID = 0
-                    )
+                } finally {
+                    _state.update {
+                        it.copy(
+                            isAddingDepartmentChief = false,
+                            addingStaffSalary = 0.0,
+                            addingStaffHiringDate = "",
+                            addingStaffDepartmentID = 0,
+                            addingStaffFirstName = "",
+                            addingStaffLastName = "",
+                            addingStaffID = 0
+                        )
+                    }
                 }
             }
         }

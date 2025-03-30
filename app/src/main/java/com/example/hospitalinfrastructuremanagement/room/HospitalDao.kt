@@ -113,6 +113,9 @@ interface HospitalDao {
 
     // Room, Ward, Cabinet
 
+    @Query("SELECT * FROM appointment")
+    fun getAppointments(): Flow<List<Appointment>>
+
     @Query("SELECT * FROM appointment WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND cabinet_number LIKE :cabinetNumber LIMIT 1")
     fun getAppointment(staffID: Int, patientID: Int, cabinetNumber: Int): Flow<Appointment>
 
@@ -121,11 +124,20 @@ interface HospitalDao {
 
     // Appointment
 
+    @Query("SELECT * FROM `accident&emergency`")
+    fun getAccidentEmergencies(): Flow<List<AccidentEmergency>>
+
     @Query("SELECT * FROM `accident&emergency` WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
     fun getAccidentEmergency(patientID: Int, staffID: Int, wardNumber: Int) : Flow<AccidentEmergency>
 
+    @Query("SELECT * FROM surgery")
+    fun getSurgeries(): Flow<List<Surgery>>
+
     @Query("SELECT * FROM surgery WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
     fun getSurgery(patientID: Int, staffID: Int, wardNumber: Int) : Flow<Surgery>
+
+    @Query("SELECT * FROM paediatrics")
+    fun getAllPaediatrics(): Flow<List<Paediatrics>>
 
     @Query("SELECT * FROM paediatrics WHERE staff_id LIKE :staffID AND patient_id LIKE :patientID AND ward_number LIKE :wardNumber LIMIT 1")
     fun getPaediatrics(patientID: Int, staffID: Int, wardNumber: Int) : Flow<Paediatrics>

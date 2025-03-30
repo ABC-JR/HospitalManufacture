@@ -10,42 +10,44 @@ import com.example.hospitalinfrastructuremanagement.room.entities.Ward
 import com.example.hospitalinfrastructuremanagement.viewmodels.WardType_
 
 data class DepartmentChiefState(
-    var staffSalary: Double = 0.0,
-    var staffHiringDate: String = "",
-    var staffDepartmentID: Int = 0,
-    var staffFirstName: String = "",
-    var staffLastName: String = "",
-    var staffID: Int = 0,
+    val staffSalary: Double = 0.0,
+    val staffHiringDate: String = "",
+    val staffDepartmentID: Int = 0,
+    val staffFirstName: String = "",
+    val staffLastName: String = "",
+    val staffID: Int = 0,
     // Profile Info
-    var rooms: List<Room> = emptyList(),
+    val rooms: List<Room> = emptyList(),
 
-    var isAddingCabinet: Boolean = false,
-    var cabinetNumber: Int = 0,
-    var cabinetStaffID: Int = 0,
-    var cabinets: List<Cabinet> = emptyList(),
+    val isAddingCabinet: Boolean = false,
+    val cabinetNumber: Int = 0,
+    val cabinetStaffID: Int = 0,
+    val cabinets: List<Cabinet> = emptyList(),
 
-    var isAddingWard: Boolean = false,
-    var wardNumber: Int = 0,
-    var wardDoctorID: Int = 0,
-    var wardType: WardType_ = WardType_.ACCIDENT_EMERGENCY,
-    var wards: List<Ward> = emptyList(),
+    val isAddingWard: Boolean = false,
+    val wardNumber: Int = 0,
+    val wardDoctorID: Int = 0,
+    val wardType: WardType_ = WardType_.ACCIDENT_EMERGENCY,
+    val wards: List<Ward> = emptyList(),
 
     // Adding Room/Cabinet/Ward
-    var isAddingStaff: Boolean = false,
-    var addingStaffSalary: Double = 0.0,
-    var addingStaffHiringDate: String = "",
-    var addingStaffDepartmentID: Int = 0,
-    var addingStaffFirstName: String = "",
-    var addingStaffLastName: String = "",
-    var addingStaffID: Int = 0,
-    var staff: List<Staff> = emptyList(),
+    val isAddingNurse: Boolean = false,
+    val isAddingDoctor: Boolean = false,
+    val isAddingDepartmentChief: Boolean = false,
+    val addingStaffSalary: Double = 0.0,
+    val addingStaffHiringDate: String = "",
+    val addingStaffDepartmentID: Int = 0,
+    val addingStaffFirstName: String = "",
+    val addingStaffLastName: String = "",
+    val addingStaffID: Int = 0,
+    val staff: List<Staff> = emptyList(),
 
-    var addingNurseManagerDoctorID: Int = 0,
-    var addingNurseWardNumber: Int = 0,
-    var addingDoctorExperience: Double = 0.0,
-    var nurses: List<Nurse> = emptyList(),
-    var doctors: List<Doctor> = emptyList(),
-    var departmentChiefs: List<DepartmentChief> = emptyList()
+    val addingNurseManagerDoctorID: Int = 0,
+    val addingNurseWardNumber: Int = 0,
+    val addingDoctorExperience: Double = 0.0,
+    val nurses: List<Nurse> = emptyList(),
+    val doctors: List<Doctor> = emptyList(),
+    val departmentChiefs: List<DepartmentChief> = emptyList()
 
     // Adding Nurse/Doctor
 )
