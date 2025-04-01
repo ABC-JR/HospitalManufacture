@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>MainApp.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #0033b3;}
+.s1 { color: #080808;}
+.s2 { color: #067d17;}
+.s3 { color: #1750eb;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainApp.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.hospitalinfrastructuremanagement.screens</span>
+
+<span class="s1">import android.annotation.SuppressLint</span>
+<span class="s1">import androidx.compose.foundation.layout.size</span>
+<span class="s1">import androidx.compose.material.icons.Icons</span>
+<span class="s1">import androidx.compose.material.icons.filled.Add</span>
+<span class="s1">import androidx.compose.material.icons.filled.List</span>
+<span class="s1">import androidx.compose.material.icons.filled.Person</span>
+<span class="s1">import androidx.compose.material3.ExperimentalMaterial3Api</span>
+<span class="s1">import androidx.compose.material3.Icon</span>
+<span class="s1">import androidx.compose.material3.NavigationBar</span>
+<span class="s1">import androidx.compose.material3.NavigationBarItem</span>
+<span class="s1">import androidx.compose.material3.Scaffold</span>
+<span class="s1">import androidx.compose.material3.Text</span>
+<span class="s1">import androidx.compose.material3.TopAppBar</span>
+<span class="s1">import androidx.compose.runtime.Composable</span>
+<span class="s1">import androidx.compose.runtime.getValue</span>
+<span class="s1">import androidx.compose.runtime.mutableStateOf</span>
+<span class="s1">import androidx.compose.runtime.remember</span>
+<span class="s1">import androidx.compose.runtime.setValue</span>
+<span class="s1">import androidx.compose.ui.Modifier</span>
+<span class="s1">import androidx.compose.ui.graphics.vector.ImageVector</span>
+<span class="s1">import androidx.compose.ui.unit.dp</span>
+<span class="s1">import androidx.navigation.NavController</span>
+<span class="s1">import androidx.navigation.compose.NavHost</span>
+<span class="s1">import androidx.navigation.compose.composable</span>
+<span class="s1">import androidx.navigation.compose.currentBackStackEntryAsState</span>
+<span class="s1">import androidx.navigation.compose.rememberNavController</span>
+<span class="s1">import coil.compose.AsyncImage</span>
+<span class="s1">import com.example.hospitalinfrastructuremanagement.screens.mainpage.MainScreen</span>
+<span class="s1">import com.example.hospitalinfrastructuremanagement.screens.profilepage.ProfileScreen</span>
+<span class="s1">import com.example.hospitalinfrastructuremanagement.screens.signinpage.Signscreen</span>
+
+
+<span class="s1">@SuppressLint(</span><span class="s2">&quot;UnusedMaterial3ScaffoldPaddingParameter&quot;</span><span class="s1">)</span>
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">MainApp() {</span>
+    <span class="s0">val </span><span class="s1">navconroller = rememberNavController()</span>
+    <span class="s0">val </span><span class="s1">navBackStackEntry by navconroller.currentBackStackEntryAsState()</span>
+    <span class="s0">val </span><span class="s1">currentRoute = navBackStackEntry?.destination?.route</span>
+    <span class="s0">val </span><span class="s1">showBars = currentRoute != </span><span class="s2">&quot;signin&quot;</span>
+
+
+    <span class="s1">Scaffold(</span>
+        <span class="s1">topBar ={</span>
+            <span class="s0">if</span><span class="s1">(showBars){</span>
+                <span class="s1">MyTopAppBar()</span>
+            <span class="s1">}</span>
+
+        <span class="s1">} ,</span>
+        <span class="s1">bottomBar = {</span>
+            <span class="s0">if</span><span class="s1">(showBars){</span>
+                <span class="s1">BottomBar(navconroller)</span>
+            <span class="s1">}</span>
+
+        <span class="s1">}</span>
+    <span class="s1">)</span>
+    <span class="s1">{</span>
+        <span class="s1">padding-&gt;</span>
+
+        <span class="s0">val </span><span class="s1">isUserLoggedIn = </span><span class="s0">false</span>
+
+        <span class="s0">val </span><span class="s1">destination = </span><span class="s0">if </span><span class="s1">(isUserLoggedIn) </span><span class="s2">&quot;mainpage&quot; </span><span class="s0">else </span><span class="s2">&quot;signin&quot;</span>
+
+        <span class="s1">NavHost(navconroller , startDestination = destination) {</span>
+            <span class="s1">composable(</span><span class="s2">&quot;signin&quot;</span><span class="s1">) {</span>
+                <span class="s1">Signscreen(navconroller )</span>
+            <span class="s1">}</span>
+            <span class="s1">composable(</span><span class="s2">&quot;mainpage&quot;</span><span class="s1">) {</span>
+                <span class="s1">MainScreen(padding ,  navconroller)</span>
+            <span class="s1">}</span>
+            <span class="s1">composable(</span><span class="s2">&quot;tasks&quot;</span><span class="s1">) {</span>
+                <span class="s1">Text(text = </span><span class="s2">&quot;tasks&quot;</span><span class="s1">)</span>
+            <span class="s1">}</span>
+            <span class="s1">composable(</span><span class="s2">&quot;profile&quot;</span><span class="s1">) {</span>
+                <span class="s1">ProfileScreen(padding , navconroller)</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+
+
+
+<span class="s1">@OptIn(ExperimentalMaterial3Api::</span><span class="s0">class</span><span class="s1">)</span>
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">MyTopAppBar() {</span>
+    <span class="s1">TopAppBar(</span>
+        <span class="s1">title = { Text(</span><span class="s2">&quot;Hospital&quot;</span><span class="s1">) },</span>
+        <span class="s1">navigationIcon = {</span>
+            <span class="s1">AsyncImage(</span>
+                <span class="s1">model = </span><span class="s2">&quot;https://i.pinimg.com/1200x/2e/02/bf/2e02bf2de46b5cbddf3cfbc16e83e822.jpg&quot;</span><span class="s1">,</span>
+                <span class="s1">contentDescription = </span><span class="s2">&quot;logo&quot;</span><span class="s1">,</span>
+                <span class="s1">modifier = Modifier.size(</span><span class="s3">50</span><span class="s1">.dp)</span>
+            <span class="s1">)</span>
+        <span class="s1">}</span>
+    <span class="s1">)</span>
+<span class="s1">}</span>
+
+
+
+
+<span class="s1">data </span><span class="s0">class </span><span class="s1">triple(</span>
+    <span class="s0">val </span><span class="s1">name:String,</span>
+    <span class="s0">val </span><span class="s1">route:String,</span>
+    <span class="s0">val </span><span class="s1">id: ImageVector</span>
+<span class="s1">)</span>
+
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">BottomBar(navconroller : NavController){</span>
+    <span class="s0">val </span><span class="s1">list = listOf(</span>
+
+        <span class="s1">triple(</span><span class="s2">&quot;Hospital&quot; </span><span class="s1">, </span><span class="s2">&quot;mainpage&quot; </span><span class="s1">, Icons.Default.Add) ,</span>
+        <span class="s1">triple(</span><span class="s2">&quot;Tasks&quot; </span><span class="s1">, </span><span class="s2">&quot;tasks&quot; </span><span class="s1">,Icons.Default.List ) ,</span>
+        <span class="s1">triple(</span><span class="s2">&quot;Profile&quot; </span><span class="s1">, </span><span class="s2">&quot;profile&quot; </span><span class="s1">, Icons.Default.Person)</span>
+    <span class="s1">)</span>
+
+    <span class="s0">var </span><span class="s1">selectedid by remember{ mutableStateOf(</span><span class="s3">0</span><span class="s1">)}</span>
+
+    <span class="s1">NavigationBar{</span>
+        <span class="s1">list.forEachIndexed{</span>
+            <span class="s1">index , item-&gt;</span>
+            <span class="s1">NavigationBarItem(</span>
+                <span class="s1">selected = selectedid ==index ,</span>
+                <span class="s1">onClick = {</span>
+                    <span class="s1">selectedid = index</span>
+                    <span class="s1">navconroller.navigate(item)</span>
+                <span class="s1">} ,</span>
+                <span class="s1">icon = {</span>
+                    <span class="s1">Icon(item.id , </span><span class="s2">&quot;&quot;</span><span class="s1">)</span>
+                <span class="s1">} ,</span>
+                <span class="s1">label = {</span>
+                    <span class="s1">Text(text =item.name)</span>
+                <span class="s1">}</span>
+            <span class="s1">)</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
