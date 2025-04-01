@@ -11,10 +11,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.room.Room
+import com.example.hospitalinfrastructuremanagement.room.HospitalDatabase
 import com.example.hospitalinfrastructuremanagement.screens.MainApp
 import com.example.hospitalinfrastructuremanagement.ui.theme.HospitalInfrastructureManagementTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val hospitalDb by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            HospitalDatabase::class.java,
+            "hospital.db"
+        ).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

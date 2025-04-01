@@ -10,7 +10,10 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun MainScreen(padding: PaddingValues, navconroller: NavHostController) {
+fun MainScreen(
+    padding: PaddingValues,
+    navconroller: NavHostController
+) {
     Column(modifier = Modifier
         .padding(padding) ,
         )
