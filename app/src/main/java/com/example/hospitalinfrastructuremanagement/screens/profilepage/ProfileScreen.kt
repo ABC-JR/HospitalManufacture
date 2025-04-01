@@ -1,8 +1,6 @@
 package com.example.hospitalinfrastructuremanagement.screens.profilepage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +13,13 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @Composable
-fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
+fun ProfileScreen(paddingValues: PaddingValues,
+                  navController: NavController, user: String, id:String
+) {
+
+
+
+
     var isEditing by remember { mutableStateOf(false) }
     val listofphoto = listOf(
         "headdoctor" to "https://kbsu.ru/wp-content/uploads/2018/09/mudunov-kbsu.jpg" ,
@@ -27,6 +31,38 @@ fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
     )
 
 
+    var name by  remember{ mutableStateOf("")}
+
+    var number by  remember{ mutableStateOf("")}
+    var link by remember{ mutableStateOf("")}
+
+
+
+    when(user){
+        "Nurse"-> {
+            name = "Nurse"
+            number = id
+            link = listofphoto[1].second
+
+        }
+        "Doctor"-> {
+            name = "Doctor"
+            number = id
+            link = listofphoto[4].second
+
+        }
+        "Department chief"-> {
+            name = "Department chief"
+            number = id
+            link = listofphoto[0].second
+
+        }
+        "None" -> {
+            name = "None"
+            number = id
+            link = listofphoto[3].second
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
         Column(
@@ -34,7 +70,7 @@ fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = listofphoto[4].second,
+                model = link,
                 contentDescription = "Profile Image",
                 modifier = Modifier
                     .size(150.dp)
@@ -43,9 +79,9 @@ fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = "Имя: Иван Иванов", fontSize = 20.sp)
-            Text(text = "Email: ivan@example.com", fontSize = 16.sp)
-            Text(text = "Телефон: +1234567890", fontSize = 16.sp)
+            Text(text = name, fontSize = 20.sp)
+            Text(text = number, fontSize = 16.sp)
+
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {

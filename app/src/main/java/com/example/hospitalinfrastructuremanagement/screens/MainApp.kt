@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -31,15 +32,27 @@ import com.example.hospitalinfrastructuremanagement.screens.Taskpage.Tasksforeac
 import com.example.hospitalinfrastructuremanagement.screens.mainpage.MainScreen
 import com.example.hospitalinfrastructuremanagement.screens.profilepage.ProfileScreen
 import com.example.hospitalinfrastructuremanagement.screens.signinpage.Signscreen
+import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.departmentchiefviewmodel.DepartmentChiefViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.doctorviewmodel.DoctorViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.nurseviewmodel.NurseViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainApp() {
+fun MainApp(
+    departmentChiefViewModel: DepartmentChiefViewModel,
+    doctorViewModel: DoctorViewModel,
+    nurseViewModel: NurseViewModel,
+    appViewModel: AppViewModel
+
+) {
     val navconroller = rememberNavController()
     val navBackStackEntry by navconroller.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val showBars = currentRoute != "signin"
+    var namefortasks by remember { mutableStateOf("")}
+    var idfortasks by remember { mutableStateOf("")}
 
 
     Scaffold(
@@ -51,7 +64,7 @@ fun MainApp() {
         } ,
         bottomBar = {
             if(showBars){
-                BottomBar(navconroller)
+                BottomBar(navconroller , namefortasks , idfortasks)
             }
 
         }
@@ -65,16 +78,25 @@ fun MainApp() {
 
         NavHost(navconroller , startDestination = destination) {
             composable("signin") {
-                Signscreen(navconroller )
+                Signscreen(navconroller , appViewModel = appViewModel , context = LocalContext.current)
             }
             composable("mainpage") {
                 MainScreen(padding ,  navconroller)
             }
-            composable("tasks") {
-                TasksScreen()
+            composable("tasks/{whois2}") {
+                val name1  = it.arguments?.getString("whois2") ?:""
+                Tasksforeach(padding , navconroller ,name1)
             }
-            composable("profile") {
-                ProfileScreen(padding , navconroller)
+            composable("profile/{whois}/{id}") {
+
+                val name = it.arguments?.getString("whois") ?:""
+                val id = it.arguments?.getInt("id") ?: ""
+                namefortasks = name
+                idfortasks =id.toString()
+
+                ProfileScreen(
+                    padding, navconroller, name,  id.toString()
+                )
             }
         }
 
@@ -109,7 +131,7 @@ data class triple(
 )
 
 @Composable
-fun BottomBar(navconroller : NavController){
+fun BottomBar(navconroller: NavController, name: String, idfortasks: String){
     val list = listOf(
 
         triple("Hospital" , "mainpage" , Icons.Default.Add) ,
@@ -126,7 +148,12 @@ fun BottomBar(navconroller : NavController){
                 selected = selectedid ==index ,
                 onClick = {
                     selectedid = index
-                    navconroller.navigate(item.route)
+                    when(item.route){
+                        "tasks"->navconroller.navigate("tasks/${name}")
+                        "profile"->navconroller.navigate("profile/${name}/${idfortasks}")
+                        "mainpage" ->  navconroller.navigate(item.route)
+                    }
+
                 } ,
                 icon = {
                     Icon(item.id , "")

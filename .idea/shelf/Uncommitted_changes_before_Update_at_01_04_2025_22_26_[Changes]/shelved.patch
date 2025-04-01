@@ -1,0 +1,28 @@
+Index: app/src/main/java/com/example/hospitalinfrastructuremanagement/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.hospitalinfrastructuremanagement\r\n\r\nimport android.os.Bundle\r\nimport androidx.activity.ComponentActivity\r\nimport androidx.activity.compose.setContent\r\nimport androidx.activity.enableEdgeToEdge\r\nimport androidx.compose.foundation.layout.fillMaxSize\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.material3.Scaffold\r\nimport androidx.compose.material3.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.room.Room\r\nimport com.example.hospitalinfrastructuremanagement.room.HospitalDatabase\r\nimport com.example.hospitalinfrastructuremanagement.screens.MainApp\r\nimport com.example.hospitalinfrastructuremanagement.ui.theme.HospitalInfrastructureManagementTheme\r\n\r\nclass MainActivity : ComponentActivity() {\r\n\r\n    private val hospitalDb by lazy {\r\n        Room.databaseBuilder(\r\n            applicationContext,\r\n            HospitalDatabase::class.java,\r\n            \"hospital.db\"\r\n        ).build()\r\n    }\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        enableEdgeToEdge()\r\n        setContent {\r\n            HospitalInfrastructureManagementTheme {\r\n                MainApp()\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/hospitalinfrastructuremanagement/MainActivity.kt b/app/src/main/java/com/example/hospitalinfrastructuremanagement/MainActivity.kt
+--- a/app/src/main/java/com/example/hospitalinfrastructuremanagement/MainActivity.kt	(revision 7a35f544bf60dd07b069f8b2bba34360a879c997)
++++ b/app/src/main/java/com/example/hospitalinfrastructuremanagement/MainActivity.kt	(date 1743506640679)
+@@ -13,6 +13,7 @@
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.room.Room
+ import com.example.hospitalinfrastructuremanagement.room.HospitalDatabase
++import com.example.hospitalinfrastructuremanagement.room.entities.Room
+ import com.example.hospitalinfrastructuremanagement.screens.MainApp
+ import com.example.hospitalinfrastructuremanagement.ui.theme.HospitalInfrastructureManagementTheme
+ 
+@@ -26,6 +27,9 @@
+         ).build()
+     }
+ 
++
++//    val departmentChiefViewModel =hiltViewModel<>()
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         enableEdgeToEdge()

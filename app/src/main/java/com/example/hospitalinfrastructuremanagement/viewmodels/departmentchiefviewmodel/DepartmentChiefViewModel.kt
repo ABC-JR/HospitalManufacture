@@ -294,7 +294,8 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                         dao.upsertStaff(
                             Staff(
                                 ID = _state.value.addingStaffID,
-                                hiringDate = _state.value.addingStaffHiringDate
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                hierarchy = "Nurse"
                             )
                         )
                         dao.upsertNurse(
@@ -348,7 +349,8 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                         dao.upsertStaff(
                             Staff(
                                 ID = _state.value.addingStaffID,
-                                hiringDate = _state.value.addingStaffHiringDate
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                hierarchy = "Doctor"
                             )
                         )
                         dao.upsertDoctor(
@@ -393,7 +395,8 @@ class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
                         dao.upsertStaff(
                             Staff(
                                 ID = _state.value.addingStaffID,
-                                hiringDate = _state.value.addingStaffHiringDate
+                                hiringDate = _state.value.addingStaffHiringDate,
+                                hierarchy = "Department chief"
                             )
                         )
                         dao.upsertDepartmentChief(

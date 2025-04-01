@@ -1,5 +1,8 @@
 package com.example.hospitalinfrastructuremanagement.screens.signinpage
 
+
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,11 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
 
 @Composable
-fun Signscreen(navController: NavController) {
+fun Signscreen(navController: NavController , appViewModel: AppViewModel , context:Context) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
 
         Box(
             modifier = Modifier
@@ -76,7 +82,16 @@ fun Signscreen(navController: NavController) {
 
                         Button(
                             onClick = {
-                                navController.navigate("profile")
+
+                                val whois = appViewModel.getHierarchy(email.toInt())
+                                val id  = email
+                                navController.navigate("profile/${whois}${id}")
+//                                if(whois == "None"){
+//                                    Toast.makeText(context , "You are not signed" , Toast.LENGTH_LONG ).show()
+//                                }else{
+//                                    navController.navigate("profile/${whois}${id}")
+//                                }
+
                             },
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(
@@ -98,8 +113,3 @@ fun Signscreen(navController: NavController) {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SignScreenPreview() {
-    Signscreen(rememberNavController())
-}
