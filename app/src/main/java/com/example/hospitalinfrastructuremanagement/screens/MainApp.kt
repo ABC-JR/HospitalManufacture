@@ -31,11 +31,21 @@ import com.example.hospitalinfrastructuremanagement.screens.Taskpage.Tasksforeac
 import com.example.hospitalinfrastructuremanagement.screens.mainpage.MainScreen
 import com.example.hospitalinfrastructuremanagement.screens.profilepage.ProfileScreen
 import com.example.hospitalinfrastructuremanagement.screens.signinpage.Signscreen
+import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.departmentchiefviewmodel.DepartmentChiefViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.doctorviewmodel.DoctorViewModel
+import com.example.hospitalinfrastructuremanagement.viewmodels.nurseviewmodel.NurseViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainApp() {
+fun MainApp(
+    departmentChiefViewModel: DepartmentChiefViewModel,
+    doctorViewModel: DoctorViewModel,
+    nurseViewModel: NurseViewModel,
+    appViewModel: AppViewModel
+) {
+
     val navconroller = rememberNavController()
     val navBackStackEntry by navconroller.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -65,16 +75,18 @@ fun MainApp() {
 
         NavHost(navconroller , startDestination = destination) {
             composable("signin") {
-                Signscreen(navconroller )
+                Signscreen(navconroller , appViewModel)
             }
             composable("mainpage") {
                 MainScreen(padding ,  navconroller)
             }
             composable("tasks") {
-                TasksScreen()
+                Tasksforeach(padding , navController = navconroller)
             }
-            composable("profile") {
-                ProfileScreen(padding , navconroller)
+            composable("profile/{whois}") {
+                val whois = it.arguments.getString("whois") ?:""
+
+                ProfileScreen(padding , navconroller , whois)
             }
         }
 

@@ -10,5 +10,6 @@ import androidx.room.PrimaryKey
 data class Staff(
     @PrimaryKey
     @ColumnInfo(name = "ID") val ID: Int,
-    @ColumnInfo(name = "Hiring_date") val hiringDate: String
+    @ColumnInfo(name = "Hiring_date") val hiringDate: String,
+    @ColumnInfo(name = "Hierarchy") val hierarchy: String
 )

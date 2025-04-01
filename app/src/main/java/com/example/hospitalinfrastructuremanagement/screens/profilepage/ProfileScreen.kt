@@ -15,7 +15,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @Composable
-fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
+fun ProfileScreen( paddingValues: PaddingValues,navController: NavController , user: String) {
+
+
+
+
     var isEditing by remember { mutableStateOf(false) }
     val listofphoto = listOf(
         "headdoctor" to "https://kbsu.ru/wp-content/uploads/2018/09/mudunov-kbsu.jpg" ,
@@ -27,6 +31,27 @@ fun ProfileScreen( paddingValues: PaddingValues,navController: NavController) {
     )
 
 
+    val name =  remember{ mutableStateOf("")}
+    val email =  remember{ mutableStateOf("")}
+    val number =  remember{ mutableStateOf("")}
+    val name =  remember{ mutableStateOf("")}
+
+
+
+    when(user){
+        "Nurse"-> {
+
+        }
+        "Doctor"-> {
+
+        }
+        "Department chief"-> {
+
+        }
+        "None" -> {
+
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
         Column(

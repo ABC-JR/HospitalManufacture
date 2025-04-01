@@ -17,11 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
 
 @Composable
-fun Signscreen(navController: NavController) {
+fun Signscreen(navController: NavController , appViewModel: AppViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
 
         Box(
             modifier = Modifier
@@ -76,7 +78,8 @@ fun Signscreen(navController: NavController) {
 
                         Button(
                             onClick = {
-                                navController.navigate("profile")
+                                val whois =  appViewModel.getHierarchy(email.toInt())
+                                navController.navigate("profile/${whois}")
                             },
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(
@@ -98,8 +101,3 @@ fun Signscreen(navController: NavController) {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SignScreenPreview() {
-    Signscreen(rememberNavController())
-}
