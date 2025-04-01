@@ -70,7 +70,7 @@ fun MainApp() {
                 MainScreen(padding ,  navconroller)
             }
             composable("tasks") {
-                Text(text = "tasks")
+                Tasksforeach(padding , navconroller)
             }
             composable("profile") {
                 ProfileScreen(padding , navconroller)
