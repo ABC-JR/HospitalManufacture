@@ -86,7 +86,7 @@ fun MainScreen(
         newsitem("https://avatars.mds.yandex.net/i?id=1a653e7b3692ee3404739674515d10e6_l-9221695-images-thumbs&n=13" ,
             "We have hired a wonderful new pediatrician.")
         Spacer(modifier = Modifier.padding(4.dp))
-        newsitem("")
+        newsitem("" , "dsfds")
 
     }
 }

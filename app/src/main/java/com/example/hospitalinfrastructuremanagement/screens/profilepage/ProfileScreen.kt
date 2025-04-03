@@ -32,7 +32,6 @@ fun ProfileScreen(paddingValues: PaddingValues,
 
 
     var name by  remember{ mutableStateOf("")}
-
     var number by  remember{ mutableStateOf("")}
     var link by remember{ mutableStateOf("")}
 

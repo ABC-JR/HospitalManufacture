@@ -66,7 +66,7 @@ interface HospitalDao {
     @Upsert
     suspend fun upsertDepartmentChief(departmentChief: DepartmentChief)
 
-    // Staff, Nurse, Doctor, Department chief
+    // Staff, Nurse, Doctor, Department chief, Department
 
     @Query("SELECT * FROM department WHERE department_id LIKE :departmentID LIMIT 1")
     fun getDepartment(departmentID: Int) : Flow<Department>
