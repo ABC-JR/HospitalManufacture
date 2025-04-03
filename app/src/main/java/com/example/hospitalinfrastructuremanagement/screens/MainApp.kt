@@ -153,7 +153,6 @@ fun BottomBar(navconroller: NavController, name: String, idfortasks: String){
                         "profile"->navconroller.navigate("profile/${name}/${idfortasks}")
                         "mainpage" ->  navconroller.navigate(item.route)
                     }
-
                 } ,
                 icon = {
                     Icon(item.id , "")
