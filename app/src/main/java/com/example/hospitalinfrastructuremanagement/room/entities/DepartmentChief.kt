@@ -16,13 +16,6 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = Staff::class,
-            parentColumns = arrayOf("Hiring_date"),
-            childColumns = arrayOf("Hiring_date"),
-            onUpdate = ForeignKey.CASCADE,
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
             entity = Department::class,
             parentColumns = arrayOf("Department_ID"),
             childColumns = arrayOf("Department_ID"),
