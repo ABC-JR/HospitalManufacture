@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DepartmentChiefViewModel(val dao: HospitalDao): ViewModel() {
+
     private val _rooms = dao.getRooms().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _wards = dao.getWards().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _cabinets = dao.getCabinets().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
