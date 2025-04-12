@@ -1,6 +1,7 @@
 package com.example.hospitalinfrastructuremanagement.screens.signinpage
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,21 +15,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
+import com.example.hospitalinfrastructuremanagement.databases.Entities.Department
+import com.example.hospitalinfrastructuremanagement.databases.viewmodels.DepartmentViewModel
+import com.example.hospitalinfrastructuremanagement.screens.Whois
 
+
+@SuppressLint("SuspiciousIndentation")
 @Composable
-fun Signscreen(navController: NavController , appViewModel: AppViewModel , context:Context) {
+fun Signscreen(
+    navController: NavController,
+    context: Context,
+
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val viewmodel = hiltViewModel<DepartmentViewModel>()
+
+    LaunchedEffect(Unit) {
+        viewmodel.insertItem(Department(departmentname = "Nurse"))
+        viewmodel.insertItem(Department(departmentname = "Doctor"))
+        viewmodel.insertItem(Department(departmentname = "admin"))
+
+    }
+
+    var listofadmin  = viewmodel.allworkers.collectAsState()
+    var listofdoctors = viewmodel.alldoctor.collectAsState()
+    var listofnurses = viewmodel.allnurses.collectAsState()
 
 
         Box(
@@ -66,38 +85,67 @@ fun Signscreen(navController: NavController , appViewModel: AppViewModel , conte
                         OutlinedTextField(
                             value = email,
                             onValueChange = { email = it },
-                            label = { Text("Email") },
+                            label = { Text("id") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth() ,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+//                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
-//                        OutlinedTextField(
-//                            value = password,
-//                            onValueChange = { password = it },
-//                            label = { Text("Password") },
-//                            singleLine = true,
-//                            visualTransformation = PasswordVisualTransformation(),
-//                            modifier = Modifier.fillMaxWidth()
-//                        )
+
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Button(
                             onClick = {
+                                val matched = listofadmin.value.any {
+                                    if(it.departmentname == email){
+                                        Whois.idforenter = email
+                                    }
+                                    it.departmentname == email
+                                }
+                                val matched2 = listofdoctors.value.any{
 
-//                                val whois = appViewModel.getHierarchy(email.toInt())
-//                                val id  = email
-//                                navController.navigate("profile/${whois}${id}")
+                                    if (it.idforenter == email) {
+                                        Whois.idforenter = it.idforenter
+                                        Whois.salary = it.salary
+                                        Whois.hiringdate = it.hiringdate
+                                        Whois.lastname = it.lastname
+                                        Whois.firstname = it.firstname
+                                        navController.navigate("profile")
+                                        true // <-- return true from lambda
+                                    } else {
+                                        false // <-- return false if not matched
+                                    }
 
-//
-//                                if(whois == "None"){
-//                                    Toast.makeText(context , "You are not signed" , Toast.LENGTH_LONG ).show()
-//                                }else{
-//                                    navController.navigate("profile/${whois}${id}")
-//                                }
 
-                            },
+                                }
+                                val matched3 = listofnurses.value.any{
+                                    if (it.idforenter == email) {
+                                        Whois.idforenter = it.idforenter
+                                        Whois.salary = it.salary
+                                        Whois.hiringdate = it.hiringdate
+                                        Whois.lastname = it.lastname
+                                        Whois.firstname = it.firstname
+                                        navController.navigate("profile")
+                                        true
+                                    } else {
+                                        false
+                                    }
+
+
+                                }
+                                    if(matched){
+                                        Whois.idforenter = email
+                                        Whois.salary = ""
+                                        Whois.hiringdate = ""
+                                        Whois.lastname =""
+                                        Whois.firstname = ""
+
+                                        navController.navigate("profile")
+                                    }else{
+                                        Toast.makeText(context , "You sign in first" , Toast.LENGTH_LONG).show()
+                                    }
+                                      },
                             shape = RoundedCornerShape(8.dp),
                             colors = ButtonDefaults.buttonColors(
                                 contentColor = Color.Blue

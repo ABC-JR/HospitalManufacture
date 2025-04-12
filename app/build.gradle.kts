@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.daggerhilt)
 
     id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -45,6 +46,10 @@ android {
 
 dependencies {
     implementation(libs.coil.compose)
+    implementation("com.google.dagger:hilt-android:2.50")
+    implementation(libs.androidx.room.common)
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     implementation(libs.hilt.android)
 
@@ -53,6 +58,12 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

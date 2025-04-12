@@ -1,8 +1,12 @@
 package com.example.hospitalinfrastructuremanagement.databases.Entities
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-data class .0   (
+
+@Entity(tableName = "department")
+data class Department(
     @PrimaryKey(autoGenerate = true)
-    val
+    val deparmentid:Long =0 ,
+    val departmentname :String
 )

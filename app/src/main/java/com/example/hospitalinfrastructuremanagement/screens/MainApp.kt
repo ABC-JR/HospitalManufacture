@@ -1,10 +1,17 @@
 package com.example.hospitalinfrastructuremanagement.screens
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,31 +29,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.hospitalinfrastructuremanagement.databases.viewmodels.DepartmentViewModel
 import com.example.hospitalinfrastructuremanagement.screens.Taskpage.Tasksforeach
 import com.example.hospitalinfrastructuremanagement.screens.mainpage.MainScreen
+import com.example.hospitalinfrastructuremanagement.screens.profilepage.MainProfileScreen
 import com.example.hospitalinfrastructuremanagement.screens.profilepage.ProfileScreen
 import com.example.hospitalinfrastructuremanagement.screens.signinpage.Signscreen
-import com.example.hospitalinfrastructuremanagement.viewmodels.appviewmodel.AppViewModel
-import com.example.hospitalinfrastructuremanagement.viewmodels.departmentchiefviewmodel.DepartmentChiefViewModel
-import com.example.hospitalinfrastructuremanagement.viewmodels.doctorviewmodel.DoctorViewModel
-import com.example.hospitalinfrastructuremanagement.viewmodels.nurseviewmodel.NurseViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainApp(
-    departmentChiefViewModel: DepartmentChiefViewModel,
-    doctorViewModel: DoctorViewModel,
-    nurseViewModel: NurseViewModel,
-    appViewModel: AppViewModel
-
+    database:DepartmentViewModel
 ) {
     val navconroller = rememberNavController()
     val navBackStackEntry by navconroller.currentBackStackEntryAsState()
@@ -53,6 +57,8 @@ fun MainApp(
     val showBars = currentRoute != "signin"
     var namefortasks by remember { mutableStateOf("")}
     var idfortasks by remember { mutableStateOf("")}
+
+    var listofpeople = database.allworkers.collectAsState()
 
 
     Scaffold(
@@ -78,25 +84,19 @@ fun MainApp(
 
         NavHost(navconroller , startDestination = destination) {
             composable("signin") {
-                Signscreen(navconroller , appViewModel = appViewModel , context = LocalContext.current)
+                Signscreen(navconroller  , context = LocalContext.current )
             }
             composable("mainpage") {
                 MainScreen(padding ,  navconroller)
             }
-            composable("tasks/{whois2}") {
-                val name1  = it.arguments?.getString("whois2") ?:""
-                Tasksforeach(padding , navconroller ,name1)
+            composable("tasks") {
+
+                Tasksforeach(padding , navconroller  )
             }
-            composable("profile/{whois}/{id}") {
+            composable("profile") {
 
-                val name = it.arguments?.getString("whois") ?:""
-                val id = it.arguments?.getInt("id") ?: ""
-                namefortasks = name
-                idfortasks =id.toString()
+                MainProfileScreen(navconroller , padding)
 
-                ProfileScreen(
-                    padding, navconroller, name,  id.toString()
-                )
             }
         }
 
@@ -109,6 +109,7 @@ fun MainApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar() {
+    val context  = LocalContext.current
     TopAppBar(
         title = { Text("Hospital") },
         navigationIcon = {
@@ -149,8 +150,8 @@ fun BottomBar(navconroller: NavController, name: String, idfortasks: String){
                 onClick = {
                     selectedid = index
                     when(item.route){
-                        "tasks"->navconroller.navigate("tasks/${name}")
-                        "profile"->navconroller.navigate("profile/${name}/${idfortasks}")
+                        "tasks"->navconroller.navigate("tasks")
+                        "profile"->navconroller.navigate("profile")
                         "mainpage" ->  navconroller.navigate(item.route)
                     }
                 } ,
