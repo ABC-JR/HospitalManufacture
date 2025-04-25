@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -84,7 +86,9 @@ fun MainApp(
 
         NavHost(navconroller , startDestination = destination) {
             composable("signin") {
-                Signscreen(navconroller  , context = LocalContext.current )
+                Box(modifier =Modifier.padding(padding)){
+                    Signscreen(navconroller  , context = LocalContext.current )
+                }
             }
             composable("mainpage") {
                 MainScreen(padding ,  navconroller)

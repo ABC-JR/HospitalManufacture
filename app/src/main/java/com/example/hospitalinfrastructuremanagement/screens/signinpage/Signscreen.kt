@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.hospitalinfrastructuremanagement.databases.Entities.Department
+import com.example.hospitalinfrastructuremanagement.databases.Entities.Doctor
 import com.example.hospitalinfrastructuremanagement.databases.viewmodels.DepartmentViewModel
 import com.example.hospitalinfrastructuremanagement.screens.Whois
 
@@ -43,7 +44,21 @@ fun Signscreen(
         viewmodel.insertItem(Department(departmentname = "Doctor"))
         viewmodel.insertItem(Department(departmentname = "admin"))
 
+
+        for(i in 0 .. 100){
+            viewmodel.insertDoctor(Doctor(
+                hiringdate = "23",
+                salary = "6500",
+                lastname = "lastname",
+                firstname = "firstname",
+                idforenter = "230${i}"
+            ))
+        }
+
     }
+
+
+
 
     var listofadmin  = viewmodel.allworkers.collectAsState()
     var listofdoctors = viewmodel.alldoctor.collectAsState()
